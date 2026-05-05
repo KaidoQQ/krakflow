@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'task_repository.dart';
+import 'task_api_service.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,6 +26,29 @@ class MojEkran extends StatefulWidget {
 
 class _MojEkranState extends State<MojEkran> {
   String _filter = 'Wszystkie';
+  bool _isLoading = true;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTasks();
+  }
+
+  Future<void> _loadTasks() async {
+    try {
+      final tasks = await TaskApiService.fetchTasks();
+      setState(() {
+        TaskRepository.tasks = tasks;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
 
   List<Task> get filteredTasks {
     if (_filter == 'Do wykonania') {
@@ -78,12 +102,16 @@ class _MojEkranState extends State<MojEkran> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
+      body: _isLoading 
+          ? const Center(child: CircularProgressIndicator())
+          : _errorMessage != null
+              ? Center(child: Text(_errorMessage!, style: const TextStyle(color: Colors.red, fontSize: 16)))
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
               "Masz dziś ${TaskRepository.tasks.length} zadania (wykonano: $doneCount)",
               style: const TextStyle(fontSize: 16),
             ),
