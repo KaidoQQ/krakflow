@@ -6,7 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,12 @@ class MojEkran extends StatefulWidget {
 }
 
 class _MojEkranState extends State<MojEkran> {
-  String _filter = 'Все';
+  String _filter = 'Wszystkie';
 
   List<Task> get filteredTasks {
-    if (_filter == 'К выполнению') {
+    if (_filter == 'Do wykonania') {
       return TaskRepository.tasks.where((t) => !t.done).toList();
-    } else if (_filter == 'Выполненные') {
+    } else if (_filter == 'Wykonane') {
       return TaskRepository.tasks.where((t) => t.done).toList();
     }
     return TaskRepository.tasks;
@@ -51,12 +51,12 @@ class _MojEkranState extends State<MojEkran> {
                     showDialog(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        title: const Text("Подтверждение"),
-                        content: const Text("Удалить все задачи?"),
+                        title: const Text("Potwierdzenie"),
+                        content: const Text("Usunąć wszystkie zadania?"),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(ctx),
-                            child: const Text("Отмена"),
+                            child: const Text("Anuluj"),
                           ),
                           TextButton(
                             onPressed: () {
@@ -66,10 +66,10 @@ class _MojEkranState extends State<MojEkran> {
                               Navigator.pop(ctx);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text("Все задачи удалены")),
+                                    content: Text("Wszystkie zadania usunięte")),
                               );
                             },
-                            child: const Text("Удалить"),
+                            child: const Text("Usuń"),
                           ),
                         ],
                       ),
@@ -116,7 +116,7 @@ class _MojEkranState extends State<MojEkran> {
                         TaskRepository.tasks.remove(task);
                       });
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Задача '${task.title}' удалена")),
+                        SnackBar(content: Text("Zadanie '${task.title}' usunięte")),
                       );
                     },
                     background: Container(
@@ -187,9 +187,9 @@ class FilterBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildButton("Все"),
-        _buildButton("К выполнению"),
-        _buildButton("Выполненные"),
+        _buildButton("Wszystkie"),
+        _buildButton("Do wykonania"),
+        _buildButton("Wykonane"),
       ],
     );
   }
@@ -254,7 +254,7 @@ class TaskCard extends StatelessWidget {
         ),
         subtitle: Row(
           children: [
-            Text("termin: ${task.deadline} | priorytet: "),
+            Text("Termin: ${task.deadline} | Priorytet: "),
             Text(
               task.priority,
               style: TextStyle(color: priorityColor, fontWeight: FontWeight.bold),
@@ -287,7 +287,7 @@ class AddTaskScreen extends StatelessWidget {
                 TextField(
                   controller: titleController,
                   decoration: const InputDecoration(
-                    labelText: "Tytul zadania",
+                    labelText: "Tytuł zadania",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -295,7 +295,7 @@ class AddTaskScreen extends StatelessWidget {
                 TextField(
                   controller: deadlineController,
                   decoration: const InputDecoration(
-                    labelText: "Deadline zadania",
+                    labelText: "Termin zadania",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -368,7 +368,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
             TextField(
               controller: titleController,
               decoration: const InputDecoration(
-                labelText: "Tytul zadania",
+                labelText: "Tytuł zadania",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -376,7 +376,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
             TextField(
               controller: deadlineController,
               decoration: const InputDecoration(
-                labelText: "Deadline zadania",
+                labelText: "Termin zadania",
                 border: OutlineInputBorder(),
               ),
             ),
