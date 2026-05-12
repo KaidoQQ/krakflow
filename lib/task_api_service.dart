@@ -17,6 +17,7 @@ class TaskApiService {
 
       return todosJson.map((json) {
         return Task(
+          id: json['id'] as int,
           title: json['todo'] as String,
           done: json['completed'] as bool,
           priority: priorities[random.nextInt(priorities.length)],
